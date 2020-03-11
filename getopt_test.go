@@ -69,7 +69,7 @@ func newTestFlagSet(t *testing.T) *testFlagSet {
 	tf.B = f.Bool("b", false, "desc of b")
 	tf.C = f.Bool("c", false, "desc of c")
 	tf.D = f.Bool("d", false, "desc of d")
-	tf.Long = f.Int("long", 0, "long only")
+	tf.Long = f.Int("long", 0, "`long` only")
 	f.Alias("a", "aah")
 	f.Aliases("b", "beeta", "c", "charlie")
 	tf.I = f.Int("i", 0, "i")
@@ -130,7 +130,7 @@ var wantHelpText = `  -a, --aah            desc of a
   -c, --charlie        desc of c
   -d                   desc of d
   -i, --india int      i
-      --long int       long only
+      --long long      long only
   -s, --sierra string  string
 `
 
