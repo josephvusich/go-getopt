@@ -51,7 +51,7 @@
 // where, for legacy reasons, it is important to use exactly getopt(3)
 // syntax, such as when rewriting in Go an existing tool that already
 // uses getopt(3).
-package getopt // import "rsc.io/getopt"
+package getopt
 
 import (
 	"flag"
