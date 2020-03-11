@@ -350,6 +350,9 @@ func PrintDefaults() {
 // about short/long alias pairs and prints the correct syntax for
 // long flags.
 func (f *FlagSet) PrintDefaults() {
+	flagText := make([]string, 0, f.NFlag())
+	descText := make([]string, 0, f.NFlag())
+
 	f.FlagSet.VisitAll(func(fg *flag.Flag) {
 		name := fg.Name
 		short, long := "", ""
@@ -366,23 +369,16 @@ func (f *FlagSet) PrintDefaults() {
 				s += ", --" + long
 			}
 		} else {
-			s = fmt.Sprintf("  --%s", long) // Two spaces before -; see next two comments.
+			s = fmt.Sprintf("      --%s", long) // Two spaces before -; see next two comments.
 		}
 		name, usage := flag.UnquoteUsage(fg)
 		if len(name) > 0 {
 			s += " " + name
 		}
 
-		// Boolean flags of one ASCII letter are so common we
-		// treat them specially, putting their usage on the same line.
-		if len(s) <= 4 { // space, space, '-', 'x'.
-			s += "\t"
-		} else {
-			// Four spaces before the tab triggers good alignment
-			// for both 4- and 8-space tab stops.
-			s += "\n    \t"
-		}
-		s += usage
+		flagText = append(flagText, s)
+
+		s = usage
 		if !isZeroValue(fg, fg.DefValue) {
 			if strings.HasSuffix(reflect.TypeOf(fg.Value).String(), "stringValue") {
 				// put quotes on the value
@@ -391,8 +387,22 @@ func (f *FlagSet) PrintDefaults() {
 				s += fmt.Sprintf(" (default %v)", fg.DefValue)
 			}
 		}
-		fmt.Fprint(f.out(), s, "\n")
+
+		descText = append(descText, s)
 	})
+
+	var longest int
+	for _, l := range flagText {
+		if len(l) > longest {
+			longest = len(l)
+		}
+	}
+
+	padFmt := fmt.Sprintf("%%-%ds  ", longest)
+	flagFmt := padFmt + "%s\n"
+	for i := range flagText {
+		fmt.Fprintf(f.out(), flagFmt, flagText[i], descText[i])
+	}
 }
 
 // isZeroValue guesses whether the string represents the zero

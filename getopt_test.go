@@ -125,19 +125,13 @@ func TestBasic(t *testing.T) {
 	}
 }
 
-var wantHelpText = `  -a, --aah
-    	desc of a
-  -b, --beeta
-    	desc of b
-  -c, --charlie
-    	desc of c
-  -d	desc of d
-  -i, --india int
-    	i
-  --long int
-    	long only
-  -s, --sierra string
-    	string
+var wantHelpText = `  -a, --aah            desc of a
+  -b, --beeta          desc of b
+  -c, --charlie        desc of c
+  -d                   desc of d
+  -i, --india int      i
+      --long int       long only
+  -s, --sierra string  string
 `
 
 func TestHelpText(t *testing.T) {
