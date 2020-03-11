@@ -351,7 +351,7 @@ func PrintDefaults() {
 // long flags.
 func (f *FlagSet) PrintDefaults() {
 	flagText := make([]string, 0, f.NFlag())
-	descText := make([]string, 0, f.NFlag())
+	descText := make([][]string, 0, f.NFlag())
 
 	f.FlagSet.VisitAll(func(fg *flag.Flag) {
 		name := fg.Name
@@ -388,7 +388,7 @@ func (f *FlagSet) PrintDefaults() {
 			}
 		}
 
-		descText = append(descText, s)
+		descText = append(descText, strings.Split(s, "\n"))
 	})
 
 	var longest int
@@ -400,8 +400,9 @@ func (f *FlagSet) PrintDefaults() {
 
 	padFmt := fmt.Sprintf("%%-%ds  ", longest)
 	flagFmt := padFmt + "%s\n"
+	descPad := fmt.Sprintf("\n"+padFmt, "")
 	for i := range flagText {
-		fmt.Fprintf(f.out(), flagFmt, flagText[i], descText[i])
+		fmt.Fprintf(f.out(), flagFmt, flagText[i], strings.Join(descText[i], descPad))
 	}
 }
 

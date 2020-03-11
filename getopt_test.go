@@ -65,7 +65,7 @@ func newTestFlagSet(t *testing.T) *testFlagSet {
 	tf := &testFlagSet{t: t, flag: NewFlagSet("x", flag.ContinueOnError)}
 	f := tf.flag
 	f.SetOutput(&tf.buf)
-	tf.A = f.Bool("a", false, "desc of a")
+	tf.A = f.Bool("a", false, "desc of a\nis a boolean")
 	tf.B = f.Bool("b", false, "desc of b")
 	tf.C = f.Bool("c", false, "desc of c")
 	tf.D = f.Bool("d", false, "desc of d")
@@ -126,6 +126,7 @@ func TestBasic(t *testing.T) {
 }
 
 var wantHelpText = `  -a, --aah            desc of a
+                       is a boolean
   -b, --beeta          desc of b
   -c, --charlie        desc of c
   -d                   desc of d
